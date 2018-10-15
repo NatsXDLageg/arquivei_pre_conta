@@ -254,6 +254,26 @@ body
     line-height: 16.0px;
 }
 
+.transparenci {
+    background-color: black;
+    top: 0;
+    height: 781px;
+    width: 1366px;
+    position: absolute;
+    margin: 0;
+    left: 0;
+    opacity: .5;
+}
+#modal {
+    background-color: white;
+    top: 147px;
+    left: 424px;
+    height: 421px;
+    width: 502px;
+    position: absolute;
+    border-radius: 10px;
+}
+
 .theme-background {
     background-color: rgb(0, 100, 185) !important;
 }

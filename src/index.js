@@ -19,6 +19,7 @@ function Body(props) {
             <Ads
                 vocePodeTerAsNotasDesc=""
             />
+            <TryModal />
         </div>
     );
 }
@@ -158,7 +159,7 @@ function VLine(props) {
 function IconButton(props) {
     return (
         <button className="w3-button icon-button" style={{left: props.left}}>
-            <img src={props.imgSrc} style={{width: props.iconWidth, margin: "0px 4px 0px 0px"}}/>
+            <img src={props.imgSrc} alt="" style={{width: props.iconWidth, margin: "0px 4px 0px 0px"}}/>
             {props.label}
         </button>
     );
@@ -195,6 +196,39 @@ function Cta(props) {
             <button className="w3-button cta-button">
                 {props.buttonLabel}
             </button>
+        </div>
+    );
+}
+
+class TryModal extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            active: false
+        };
+    }
+
+    render() {
+        return (
+            <div className="w3-hide">
+                <Transparenci />
+                <Modal />
+            </div>
+        );
+    }
+}
+function Transparenci(props) {
+    return (
+        <div className="transparenci">
+
+        </div>
+    );
+}
+function Modal(props) {
+    return (
+        <div id="modal">
+
         </div>
     );
 }
