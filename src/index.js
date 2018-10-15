@@ -5,24 +5,111 @@ import './css/index.css';
 import './css/fonts.css';
 import './css/w3.css';
 
-function Body(props) {
-    return (
-        <div id="body-div">
-            <Header />
-            <Cnpj
-                cnpjTitle="Seu CNPJ / Razão Social:"
-                cnpjValue="[SP] [19.427.033/0001-40] ARQUIVEI SERVICOS ON LINE LTDA"
-            />
-            <div className="existemnovasnotas">
-                Existem novas notas contra seu CNPJ
+class Body extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            tryModalVisible: false,
+            loadingModalVisible: false
+        }
+    }
+
+    render() {
+        return (
+            <div id="body-div">
+                <Header />
+                <Cnpj
+                    cnpjTitle="Seu CNPJ / Razão Social:"
+                    cnpjValue="[SP] [19.427.033/0001-40] ARQUIVEI SERVICOS ON LINE LTDA"
+                />
+                <div className="existemnovasnotas">
+                    Existem novas notas contra seu CNPJ
+                </div>
+                <Table />
+                <Ads
+                    vocePodeTerAsNotasDesc=""
+                    onClick={() => this.handleGreenBtnClick()}
+                />
+                <TryModal
+                    active={this.state.tryModalVisible}
+                    onClick={() => this.handleBlueBtnClick()}
+                />
+                <LoadingModal
+                    active={this.state.loadingModalVisible}
+                />
             </div>
-            <Table />
-            <Ads
-                vocePodeTerAsNotasDesc=""
-            />
-            <TryModal />
-        </div>
-    );
+        );
+    }
+
+    handleGreenBtnClick() {
+        this.setState({
+            tryModalVisible: true,
+            loadingModalVisible: false
+        });
+    }
+    handleBlueBtnClick() {
+        this.setState({
+            tryModalVisible: false,
+            loadingModalVisible: true
+        });
+
+        // This timeout exists only because this is a simulation and the request would be very fast, so we wouldn't see the loading screen
+        setTimeout(() => {
+            // Propably with a working api this would be the code used:
+
+            // $.post("some-api-url.php", (data, status) => {
+            //    if(data.success) {
+            //         this.setState({
+            //             tryModalVisible: false,
+            //             loadingModalVisible: false
+            //         });
+            //
+            //         window.location.href = data.redirect;
+            //     }
+            //     else {
+            //         this.setState({
+            //             tryModalVisible: true,
+            //             loadingModalVisible: false
+            //         });
+            //         // Error, should show some feedback for the user like a toast
+            //     }
+            // })
+            // .fail(function () {
+            //     console.log("error");
+            // });
+
+            //Here there is a simulation of call to api, and the returned value is controlled manually
+            var client = new XMLHttpRequest();
+            client.open('GET', '/res/migration-success.json');
+            // client.open('GET', '/res/migration-failure.json');
+            client.onreadystatechange = (() => {
+                if(client.readyState === XMLHttpRequest.DONE) {
+                    let data = JSON.parse(client.responseText);
+                    if(data.success) {
+                        this.setState({
+                            tryModalVisible: false,
+                            loadingModalVisible: false
+                        });
+
+                        //Simulating the creation of token that would come with the request result
+                        let url = data.redirect.replace('some-unreadable-hash-token', token());
+
+                        window.location.href = url;
+                    }
+                    else {
+                        this.setState({
+                            tryModalVisible: true,
+                            loadingModalVisible: false
+                        });
+                        // Error, should show some feedback for the user like a toast
+                    }
+                }
+            });
+            client.send();
+        }, 2000);
+
+    }
 }
 
 function Header(props) {
@@ -150,12 +237,14 @@ class Rows extends React.Component {
                     left="773px"
                     label={this.state.loaded ? this.state.cnpj : placeholder}
                 />
-                <IconButton
-                    left="1010px"
-                    iconWidth="14px"
-                    imgSrc="https://anima-uploads.s3.amazonaws.com/5ab41845a1ffdf000d05dabf/5bb7d4f7cf7a6500093eda50/5bb7d4f8cf7a65000aeb67be/img/pg-1-icon 1@2x.png"
-                    label="Ver Nota"
-                />
+                <a href="http://www.africau.edu/images/default/sample.pdf">
+                    <IconButton
+                        left="1010px"
+                        iconWidth="14px"
+                        imgSrc="https://anima-uploads.s3.amazonaws.com/5ab41845a1ffdf000d05dabf/5bb7d4f7cf7a6500093eda50/5bb7d4f8cf7a65000aeb67be/img/pg-1-icon 1@2x.png"
+                        label="Ver Nota"
+                    />
+                </a>
                 <IconButton
                     left="1129px"
                     iconWidth="14px"
@@ -167,10 +256,38 @@ class Rows extends React.Component {
     };
 
     componentDidMount(){
-        // Propably with a working api this would be the code used
-        // $.post("some-api-url.php", function (data, status) {
+        // Propably with a working api this would be the code used:
+
+        // $.post("some-api-url.php", (data, status) => {
         //     if(data.status === 1) {
+        //         let auth;
+        //         data = data.networkGrowth.data[0];
+        //         if(data.status === "authorized") {
+        //             auth = "AUTORIZADA";
+        //         }
+        //         else {
+        //             auth = "NÃO AUTORIZADA";
+        //         }
         //
+        //         let number = data.number;
+        //
+        //         let emissionDate = data.emissionDate;
+        //
+        //         let provider = data.emitter.XNome;
+        //
+        //         let value = data.value;
+        //
+        //         let cnpj = data.emitter.CNPJ;
+        //
+        //         this.setState( {
+        //             loaded: true,
+        //             auth: auth,
+        //             number: number,
+        //             emissionDate: emissionDate,
+        //             provider: provider,
+        //             value: value,
+        //             cnpj: cnpj
+        //         });
         //     }
         // })
         // .fail(function () {
@@ -182,9 +299,8 @@ class Rows extends React.Component {
         var client = new XMLHttpRequest();
         client.open('GET', '/res/initial-state.json');
         client.onreadystatechange = (() => {
-            if(client.readyState == XMLHttpRequest.DONE) {
+            if(client.readyState === XMLHttpRequest.DONE) {
                 let data = JSON.parse(client.responseText);
-                console.log(data);
 
                 let auth;
                 data = data.networkGrowth.data[0];
@@ -195,6 +311,7 @@ class Rows extends React.Component {
                     auth = "NÃO AUTORIZADA";
                 }
 
+                //Most of these fields need some refactoring to display values in a readable way, but for now this is not done
                 let number = data.number;
 
                 let emissionDate = data.emissionDate;
@@ -228,7 +345,10 @@ function VLine(props) {
 }
 function IconButton(props) {
     return (
-        <button className="w3-button icon-button" style={{left: props.left}}>
+        <button
+            className="w3-button icon-button"
+            style={{left: props.left}}
+        >
             <img src={props.imgSrc} alt="" style={{width: props.iconWidth, margin: "0px 4px 0px 0px"}}/>
             {props.label}
         </button>
@@ -244,6 +364,7 @@ function Ads(props) {
             <VocePodeTerAsNotas />
             <Cta
                 buttonLabel="Experimentar o Arquivei"
+                onClick={props.onClick}
             />
         </div>
     );
@@ -263,30 +384,33 @@ function VocePodeTerAsNotas(props) {
 function Cta(props) {
     return (
         <div className="cta">
-            <button className="w3-button cta-button">
+            <button
+                className="w3-button cta-button"
+                onClick={props.onClick}
+            >
                 {props.buttonLabel}
             </button>
         </div>
     );
 }
 
-class TryModal extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            active: false
-        };
+function TryModal(props) {
+    let className;
+    if(props.active) {
+        className = "w3-show";
+    }
+    else {
+        className = "w3-hide";
     }
 
-    render() {
-        return (
-            <div className="w3-hide">
-                <Transparenci />
-                <Modal />
-            </div>
-        );
-    }
+    return (
+        <div className={className}>
+            <Transparenci />
+            <Modal
+                onClick={props.onClick}
+            />
+        </div>
+    );
 }
 function Transparenci(props) {
     return (
@@ -298,10 +422,60 @@ function Transparenci(props) {
 function Modal(props) {
     return (
         <div id="modal">
-
+            <p className="title">
+                Experimente grátis o Arquivei
+            </p>
+            <p className="text">
+                Com <span className="bold">o Arquivei</span>, você terá acesso a <span className="bold">todas as notas</span> dos seus fornecedores, além de:
+                <br/>
+                <br/>
+                • <span className="bold">Consulta</span> de seus <span className="bold">XMLs</span> direto da <span className="bold">Sefaz</span>;
+                <br/>
+                • <span className="bold">Alerta</span> de notas <span className="bold">canceladas</span>;
+                <br/>
+                • <span className="bold">Conhecimento</span> de notas <span className="bold">indevidas/frias</span>;
+                <br/>
+                <br/>
+                <span className="bold">Tudo</span> isso <span className="bold">grátis</span> e sem compromisso.
+            </p>
+            <button
+                className="w3-button cta"
+                onClick={props.onClick}
+            >
+                Experimentar agora
+            </button>
+            <p className="terms">
+                Ao continuar você aceita o <span className="alt">Termo de uso do Arquivei</span>.
+            </p>
         </div>
     );
 }
+
+function LoadingModal(props) {
+    let className;
+    if(props.active) {
+        className = "w3-show";
+    }
+    else {
+        className = "w3-hide";
+    }
+
+    return (
+        <div id="loadingModal" className={className}>
+            <img className="factory" src="./img/factory.gif" alt="Loading"/>
+            <p className="text">Descarregando para a nuvem</p>
+            <img className="bar" src="https://anima-uploads.s3.amazonaws.com/5ab41845a1ffdf000d05dabf/5bb7d4f7cf7a6500093eda50/5bb7d66a386437000af38ab2/img/pg-3-status-bar.png" alt="Loading bar"/>
+        </div>
+    );
+}
+
+var rand = function() {
+    return Math.random().toString(36).substr(2); // remove `0.`
+};
+
+var token = function() {
+    return rand() + rand(); // to make it longer
+};
 
 ReactDOM.render(
     <Body />,

@@ -171,7 +171,7 @@ body
     text-align: left;
     line-height: 17.0px;
 }
-.table>.rows>.icon-button {
+.table>.rows .icon-button {
     background-color: rgb(32, 116, 186);
     top: 17px;
     height: 32px;
@@ -272,6 +272,106 @@ body
     width: 502px;
     position: absolute;
     border-radius: 10px;
+}
+#modal>.title {
+    top: 24px;
+    height: auto;
+    width: auto;
+    position: absolute;
+    margin: 0;
+    left: 120px;
+    font-family: 'ProximaNovaSoft-Bold',Helvetica,Arial,serif;
+    font-size: 18.0px;
+    color: rgba(32,116,186,1.0);
+    text-align: center;
+}
+#modal>.text {
+    top: 76px;
+    height: auto;
+    width: 367px;
+    position: absolute;
+    margin: 0;
+    left: 72px;
+    font-family: 'ProximaNovaSoft-Regular',Helvetica,Arial,serif;
+    font-size: 14.0px;
+    color: rgba(126,135,143,1.0);
+    text-align: left;
+    line-height: 22.0px;
+}
+#modal>.text>.bold {
+    font-family: 'ProximaNovaSoft-Bold',Helvetica,Arial,serif;
+}
+#modal>.cta {
+    font-family: 'ProximaNovaSoft-Semibold',Helvetica,Arial,serif;
+    background-color: rgb(32, 116, 186);
+    top: 284px;
+    height: 40px;
+    width: 191px;
+    position: absolute;
+    margin: 0;
+    left: 156px;
+    color: white;
+    font-size: 18.0px;
+    text-align: center;
+    line-height: 16.0px;
+    border-radius: 5px;
+}
+#modal>.terms {
+    top: 364px;
+    height: auto;
+    width: auto;
+    position: absolute;
+    margin: 0;
+    left: 88px;
+    font-family: 'ProximaNovaSoft-Regular',Helvetica,Arial,serif;
+    font-size: 14.0px;
+    color: rgba(126,135,143,1.0);
+    text-align: center;
+    line-height: 17.0px;
+}
+#modal>.terms>.alt {
+    color: rgba(0,110,185,1.0);
+}
+
+#loadingModal {
+    background-color: white;
+    top: 147px;
+    height: 373px;
+    width: 502px;
+    position: absolute;
+    margin: 0;
+    left: 424px;
+    border-radius: 10px;
+}
+#loadingModal>.factory {
+    background-color: rgba(255,255,255,0.0);
+    top: 32px;
+    height: 247px;
+    width: 438px;
+    position: absolute;
+    margin: 0;
+    left: 32px;
+}
+#loadingModal>.text {
+    top: 295px;
+    height: auto;
+    width: 188px;
+    position: absolute;
+    margin: 0;
+    left: 157px;
+    font-family: 'ProximaNovaSoft-Semibold',Helvetica,Arial,serif;
+    font-size: 14.0px;
+    color: rgba(126,135,143,1.0);
+    text-align: left;
+    line-height: 22.0px;
+}
+#loadingModal>.bar {
+    top: 333px;
+    height: 7px;
+    width: 438px;
+    position: absolute;
+    margin: 0;
+    left: 32px;
 }
 
 .theme-background {
