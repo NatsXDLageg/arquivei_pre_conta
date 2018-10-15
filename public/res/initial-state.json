@@ -1,0 +1,42 @@
+{
+  "user": {
+    "email": "rafael.silva@arquivei.com.br",
+    "created_at": "2018-10-04 17:00:00"
+  },
+  "networkGrowth": {
+    "currentCompany": {
+      "cnpj": "19427033000140",
+      "id": 1,
+      "name": "ARQUIVEI SERVICOS ON LINE LTDA",
+      "state": "SP"
+    },
+    "data": [
+      {
+        "model": "55",
+        "origin": "sefaz",
+        "hasXML": true,
+        "isProtocoled": true,
+        "id": 1,
+        "accessKey": "99999999999999999999999999999999999999999999",
+        "status": "authorized",
+        "number": "999999",
+        "serie": "1",
+        "emissionDate": "2018-10-04 17:00:00",
+        "type": 1,
+        "stateOrigin": "SP",
+        "stateDestination": "MS",
+        "value": 974,
+        "entryDate": "2018-10-04 17:00:00",
+        "emitter": {
+          "CNPJ": "10101010101010",
+          "XNome": "COMERCIAL JAHU BORRACHAS E AUTO PECAS LTDA",
+          "IE": "101010101010"
+        },
+        "manifestation": {
+          "Date": "2018-10-04",
+          "Status": "210210"
+        }
+      }
+    ]
+  }
+}

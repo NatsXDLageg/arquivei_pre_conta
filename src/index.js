@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import $ from 'jquery';
 import './css/index.css';
 import './css/fonts.css';
 import './css/w3.css';
@@ -107,47 +108,116 @@ function Cell(props) {
         </div>
     );
 }
-function Rows(props) {
-    return (
-        <div className="rows">
-            <div className="authorized">
-                <div className="authorized1">AUTORIZADA</div>
+class Rows extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loaded: false,
+            auth: null,
+            number: null,
+            emissionDate: null,
+            provider: null,
+            value: null,
+            cnpj: null
+        }
+    }
+    render() {
+        let placeholder = "--";
+        return (
+            <div className="rows">
+                <div className="authorized">
+                    <div className="authorized1">{this.state.loaded ? this.state.auth : placeholder}</div>
+                </div>
+                <Cell
+                    left="130px"
+                    label={this.state.loaded ? this.state.number : placeholder}
+                />
+                <Cell
+                    left="217px"
+                    label={this.state.loaded ? this.state.emissionDate : placeholder}
+                />
+                <Cell
+                    left="319px"
+                    width="260px"
+                    label={this.state.loaded ? this.state.provider : placeholder}
+                />
+                <Cell
+                    left="608px"
+                    label={this.state.loaded ? this.state.value : placeholder}
+                />
+                <Cell
+                    left="773px"
+                    label={this.state.loaded ? this.state.cnpj : placeholder}
+                />
+                <IconButton
+                    left="1010px"
+                    iconWidth="14px"
+                    imgSrc="https://anima-uploads.s3.amazonaws.com/5ab41845a1ffdf000d05dabf/5bb7d4f7cf7a6500093eda50/5bb7d4f8cf7a65000aeb67be/img/pg-1-icon 1@2x.png"
+                    label="Ver Nota"
+                />
+                <IconButton
+                    left="1129px"
+                    iconWidth="14px"
+                    imgSrc="https://anima-uploads.s3.amazonaws.com/5ab41845a1ffdf000d05dabf/5bb7d4f7cf7a6500093eda50/5bb7d4f8cf7a65000aeb67be/img/pg-1-icon@2x.png"
+                    label="Baixar XML"
+                />
             </div>
-            <Cell
-                left="130px"
-                label="999999"
-            />
-            <Cell
-                left="217px"
-                label="04/10/2018"
-            />
-            <Cell
-                left="319px"
-                width="260px"
-                label="COMERCIAL JAHU BORRACHAS E AUTO PEÇAS LTDA"
-            />
-            <Cell
-                left="608px"
-                label="R$974,00"
-            />
-            <Cell
-                left="773px"
-                label="10.101.010/1010-10"
-            />
-            <IconButton
-                left="1010px"
-                iconWidth="14px"
-                imgSrc="https://anima-uploads.s3.amazonaws.com/5ab41845a1ffdf000d05dabf/5bb7d4f7cf7a6500093eda50/5bb7d4f8cf7a65000aeb67be/img/pg-1-icon 1@2x.png"
-                label="Ver Nota"
-            />
-            <IconButton
-                left="1129px"
-                iconWidth="14px"
-                imgSrc="https://anima-uploads.s3.amazonaws.com/5ab41845a1ffdf000d05dabf/5bb7d4f7cf7a6500093eda50/5bb7d4f8cf7a65000aeb67be/img/pg-1-icon@2x.png"
-                label="Baixar XML"
-            />
-        </div>
-    );
+        )
+    };
+
+    componentDidMount(){
+        // Propably with a working api this would be the code used
+        // $.post("some-api-url.php", function (data, status) {
+        //     if(data.status === 1) {
+        //
+        //     }
+        // })
+        // .fail(function () {
+        //     console.log("error");
+        // });
+
+        // This approach is being used only because this is a simulation
+        // Here, because the design was made for only displaying one row, it uses data[0] for displaying data
+        var client = new XMLHttpRequest();
+        client.open('GET', '/res/initial-state.json');
+        client.onreadystatechange = (() => {
+            if(client.readyState == XMLHttpRequest.DONE) {
+                let data = JSON.parse(client.responseText);
+                console.log(data);
+
+                let auth;
+                data = data.networkGrowth.data[0];
+                if(data.status === "authorized") {
+                    auth = "AUTORIZADA";
+                }
+                else {
+                    auth = "NÃO AUTORIZADA";
+                }
+
+                let number = data.number;
+
+                let emissionDate = data.emissionDate;
+
+                let provider = data.emitter.XNome;
+
+                let value = data.value;
+
+                let cnpj = data.emitter.CNPJ;
+
+                this.setState( {
+                    loaded: true,
+                    auth: auth,
+                    number: number,
+                    emissionDate: emissionDate,
+                    provider: provider,
+                    value: value,
+                    cnpj: cnpj
+                });
+            }
+        });
+        client.send();
+    }
 }
 function VLine(props) {
     return (
@@ -237,3 +307,4 @@ ReactDOM.render(
     <Body />,
     document.getElementById('root')
 );
+

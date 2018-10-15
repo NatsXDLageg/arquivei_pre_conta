@@ -1,0 +1,4 @@
+{
+  "success": true,
+  "redirect": "http://app.arquivei.com.br?token=some-unreadable-hash-token" 
+}
